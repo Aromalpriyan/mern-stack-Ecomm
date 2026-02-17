@@ -1,0 +1,23 @@
+{
+  "name": "backend-app",
+  "version": "2.0.0",
+  "description": "This is my first backend project",
+  "keywords": [
+    "nodejs",
+    "expressjs",
+    "mongodb",
+    "nodemon",
+    "mongooose"
+  ],
+  "license": "ISC",
+  "author": "Aromal",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "server": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "nodemon": "^3.1.11"
+  }
+}
