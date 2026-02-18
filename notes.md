@@ -6,3 +6,6 @@ what is the difference between drontend dev and backend dev
 
  IIFE = 
  immediately Invoked Functional Expression
+
+ INSTALLAION AND SERVER CREATION
+DB CONNECTION
