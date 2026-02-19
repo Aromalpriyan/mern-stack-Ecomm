@@ -17,7 +17,13 @@ app.listen(PORT,()=>{
 })
 
     }catch(error){
-        console.log(error);
+        console.log(`Error in DB Connection ${error}`.bgRed.white);
+        res.status(500).json({
+            success: false,
+            message:"Error while connecting to database",
+            error,
+        })
+        
     }   
 
 })();
