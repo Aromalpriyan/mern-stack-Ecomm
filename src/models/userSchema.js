@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import AuthRoles from "../utils/AuthRoles";
-
+import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema({
     name:{
@@ -37,6 +37,16 @@ const userSchema = new mongoose.Schema({
         default:AuthRoles.USER
     }
 },{timestamps:true})
+
+// encrypt password before saving | you can use mongoose hooks
+userSchema.pre("save", async function (next){
+    if(!this.isModified("password")){
+        return next()
+    }
+    this.password = await bcrypt.hash(this.password, 10)
+    next()
+})
+
 
 export default mongoose.model("User",userSchema)
 
