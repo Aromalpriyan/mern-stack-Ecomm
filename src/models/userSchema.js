@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import AuthRoles from "../utils/AuthRoles";
+import AuthRoles from "../utils/AuthRoles.js";
 import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema({
@@ -40,11 +40,16 @@ const userSchema = new mongoose.Schema({
 
 // encrypt password before saving | you can use mongoose hooks
 userSchema.pre("save", async function (next){
-    if(!this.isModified("password")){
+    try{
+        if(!this.isModified("password")){
         return next()
     }
     this.password = await bcrypt.hash(this.password, 10)
     next()
+    }catch(error){
+        console.log("from schema",error);
+
+    }
 })
 
 
