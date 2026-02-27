@@ -1,6 +1,7 @@
 import User from "../models/userSchema.js";
 import JWT from "jsonwebtoken"
 import config from "../config/config.js";
+import bcrypt from "bcrypt"
 
 export const cookieOptions = {
     expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
@@ -90,7 +91,8 @@ export const login = async (req,res) => {
             });
         }
         // if user exist compare the password
-        const isPasswordMatched = await user.comparePassword(password);
+       // const isPasswordMatched = await user.comparePassword(password);
+       const isPasswordMatched = await bcrypt.compare(password,user.password);
         // if password doesn't match send response
         if (!isPasswordMatched) {
             return res.status(400).json({
