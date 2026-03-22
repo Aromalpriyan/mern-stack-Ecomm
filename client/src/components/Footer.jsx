@@ -1,41 +1,59 @@
 
 
 const Footer = () => {
+  return (
+    <footer className="mt-10 px-6 py-4 bg-black/30 backdrop-blur-xl border-t border-white/10 text-white">
 
-return (
+      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
 
-<footer className="px-4 py-8 dark:bg-gray-100 dark:text-gray-600">
-	<div className="container flex flex-wrap items-center justify-center mx-auto space-y-4 sm:justify-between sm:space-y-0">
-		<div className="flex flex-row pr-3 space-x-4 sm:space-x-8">
-			<div className="flex items-center justify-center flex-shrink-0 w-12 h-12 rounded-full dark:bg-violet-600">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" className="w-5 h-5 rounded-full dark:text-gray-50">
-					<path d="M18.266 26.068l7.839-7.854 4.469 4.479c1.859 1.859 1.859 4.875 0 6.734l-1.104 1.104c-1.859 1.865-4.875 1.865-6.734 0zM30.563 2.531l-1.109-1.104c-1.859-1.859-4.875-1.859-6.734 0l-6.719 6.734-6.734-6.734c-1.859-1.859-4.875-1.859-6.734 0l-1.104 1.104c-1.859 1.859-1.859 4.875 0 6.734l6.734 6.734-6.734 6.734c-1.859 1.859-1.859 4.875 0 6.734l1.104 1.104c1.859 1.859 4.875 1.859 6.734 0l21.307-21.307c1.859-1.859 1.859-4.875 0-6.734z"></path>
-				</svg>
-			</div>
-			<ul className="flex flex-wrap items-center space-x-4 sm:space-x-8">
-				<li>
-					<a rel="noopener noreferrer" href="#">Terms of Use</a>
-				</li>
-				<li>
-					<a rel="noopener noreferrer" href="#">Privacy</a>
-				</li>
-			</ul>
-		</div>
-		<ul className="flex flex-wrap pl-3 space-x-4 sm:space-x-8">
-			<li>
-				<a rel="noopener noreferrer" href="#">Instagram</a>
-			</li>
-			<li>
-				<a rel="noopener noreferrer" href="#">Facebook</a>
-			</li>
-			<li>
-				<a rel="noopener noreferrer" href="#">Twitter</a>
-			</li>
-		</ul>
-	</div>
-</footer>
+        {/* Left Section */}
+        <div className="flex items-center gap-4">
+          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-sky-500 shadow-md">
+            <span className="font-bold text-white">M</span>
+          </div>
 
-    )
-}
+          <ul className="flex gap-6 text-sm text-gray-300">
+            <li>
+              <a href="#" className= "hover:text-sky-400 transition font-bold">
+                Terms
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:text-sky-400 transition font-bold">
+                Privacy
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        {/* Right Section */}
+        <ul className="flex gap-6 text-sm text-gray-300">
+          <li>
+            <a href="#" className="hover:text-sky-400 transition font-bold">
+              Instagram
+            </a>
+          </li>
+          <li>
+            <a href="#" className="hover:text-sky-400 transition font-bold">
+              Facebook
+            </a>
+          </li>
+          <li>
+            <a href="#" className="hover:text-sky-400 transition font-bold">
+              Twitter
+            </a>
+          </li>
+        </ul>
+
+      </div>
+
+      {/* Bottom Line */}
+      <div className="text-center text-xs text-black mt-6">
+        © {new Date().getFullYear()} MyStore. All rights reserved.
+      </div>
+
+    </footer>
+  );
+};
 
 export default Footer;

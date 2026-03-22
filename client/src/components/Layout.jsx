@@ -17,7 +17,7 @@ const Layout = ({title, description, keywords, author}) => {
                 <link rel="canonical" href="http://mysite.com/example" />
             </Helmet>
       <Navbar />
-      <main className="min-h-screen p-6">
+      <main className="min-h-screen pt-24 px-6 over">
         <Outlet />
       </main>
       <Footer />

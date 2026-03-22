@@ -1,104 +1,127 @@
-import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Navbar = () => {
-  const [showLinks, setShowLinks] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const links = [
+    { name: "Home", path: "/" },
+    { name: "About", path: "/about" },
+    { name: "Collection", path: "/collection" },
+    { name: "Products", path: "/products" },
+  ];
 
   return (
-    <div
-      className="fixed top-0 left-0 w-full z-50
-      h-20 px-6 lg:px-24 flex justify-between items-center
-      text-white
-      bg-black/30 backdrop-blur-2xl
-      border-b border-white/10
-      shadow-[0_10px_40px_rgba(0,0,0,0.45)]
-      transition-all duration-500"
-    >
-      {/* Logo */}
-      <NavLink
-        to="/"
-        className="font-nav text-2xl lg:text-4xl tracking-wide hover:text-sky-500 transition"
-      >
-        MyStore
-      </NavLink>
-
-      <div className="flex gap-6 items-center">
-        {/* Links */}
-        <ul
-          className={`
-          hidden lg:flex lg:items-center lg:gap-10
-          lg:static lg:w-auto lg:h-auto
-          lg:bg-transparent lg:translate-x-0
-
-          fixed top-20 right-0 w-64 h-screen
-          flex flex-col lg:flex-row gap-8
-          text-lg font-semibold font-nav2
-          p-10
-          transition-transform duration-500
-          ${showLinks ? "translate-x-0" : "translate-x-full"}
-        `}
-        >
-          <NavLink
-            to="."
-            className="hover:text-sky-500 transition"
-            onClick={() => setShowLinks(false)}
-          >
-            Home
-          </NavLink>
-
-          <NavLink
-            to="about"
-            className="hover:text-sky-500 transition"
-            onClick={() => setShowLinks(false)}
-          >
-            About
-          </NavLink>
-
-          <NavLink
-            to="collection"
-            className="hover:text-sky-500 transition"
-            onClick={() => setShowLinks(false)}
-          >
-            Collection
-          </NavLink>
-
-          <NavLink
-            to="products"
-            className="hover:text-sky-500 transition"
-            onClick={() => setShowLinks(false)}
-          >
-            Products
-          </NavLink>
-
-          
-          <NavLink
-            to="login"
-            className="hover:text-sky-500 transition"
-            onClick={() => setShowLinks(false)}
-          >
-            login
-          </NavLink>
-
-          <NavLink
-            to="signup"
-            className="hover:text-sky-500 transition"
-            onClick={() => setShowLinks(false)}
-          >
-            Signup
-          </NavLink>
-        </ul>
-
-        {/* Mobile Icon (same icons) */}
+    <>
+      {/* Overlay */}
+      {open && (
         <div
-          className="cursor-pointer lg:hidden"
-          onClick={() => setShowLinks(open => !open)}
-        >
-          {showLinks ? <CloseIcon /> : <MenuIcon />}
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setOpen(false)}
+        />
+      )}
+
+      {/* Navbar */}
+      <header className="fixed top-0 left-0 w-full z-50">
+        <div className="flex justify-between items-center px-6 lg:px-20 h-20
+          bg-white/5 backdrop-blur-xl border-b border-white/10
+          shadow-[0_8px_30px_rgba(0,0,0,0.3)] text-white">
+
+          {/* Logo */}
+          <NavLink
+            to="/"
+            className="text-2xl lg:text-3xl font-bold tracking-wide
+            bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent"
+          >
+            MyStore
+          </NavLink>
+
+          {/* Desktop Links */}
+          <nav className="font-medium hidden lg:flex items-center gap-10">
+            {links.map((link, i) => (
+              <NavLink
+                key={i}
+                to={link.path}
+                className={({ isActive }) =>
+                  `relative group transition ${
+                    isActive ? "text-sky-400" : "text-black/80"
+                  }`
+                }
+              >
+                {link.name}
+
+                {/* underline animation */}
+                <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-sky-400 transition-all group-hover:w-full"></span>
+              </NavLink>
+            ))}
+          </nav>
+
+          {/* Right Side */}
+          <div className="hidden lg:flex items-center gap-6">
+            <NavLink
+              to="/login"
+              className="text-white px-5 py-2 rounded-md bg-sky-500 hover:bg-sky-600 transition shadow-lg font-semibold"
+            >
+              Login
+            </NavLink>
+
+            <NavLink
+              to="/signup"
+              className="px-5 py-2 rounded-md bg-sky-500 hover:bg-sky-600 transition shadow-lg font-semibold"
+            >
+              Sign Up
+            </NavLink>
+          </div>
+
+          {/* Mobile Menu Icon */}
+          <div
+            className="lg:hidden cursor-pointer z-50"
+            onClick={() => setOpen(!open)}
+          >
+            {open ? <CloseIcon /> : <MenuIcon />}
+          </div>
         </div>
-      </div>
-    </div>
+
+        {/* Mobile Menu */}
+        <div
+          className={`fixed top-0 right-0 h-screen w-72 bg-black/90 backdrop-blur-xl
+          flex flex-col gap-8 p-10 text-lg font-medium
+          transform transition-transform duration-500 z-50
+          ${open ? "translate-x-0" : "translate-x-full"}`}
+        >
+          {links.map((link, i) => (
+            <NavLink
+              key={i}
+              to={link.path}
+              onClick={() => setOpen(false)}
+              className={({ isActive }) =>
+                `transition ${
+                  isActive ? "text-sky-400" : "text-white/80"
+                }`
+              }
+            >
+              {link.name}
+            </NavLink>
+          ))}
+
+          <hr className="border-white/20" />
+
+          <NavLink to="/login" onClick={() => setOpen(false)}>
+            Login
+          </NavLink>
+
+          <NavLink
+            to="/signup"
+            onClick={() => setOpen(false)}
+            className="px-5 py-2 text-center rounded-full bg-sky-500"
+          >
+            Sign Up
+          </NavLink>
+        </div>
+      </header>
+    </>
   );
 };
 
