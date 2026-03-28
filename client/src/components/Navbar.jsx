@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import AuthContext from "../context/AuthContext";
+import { toast } from "sonner";
+import axios from "axios";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -12,7 +15,28 @@ const Navbar = () => {
     { name: "Collection", path: "/collection" },
     { name: "Products", path: "/products" },
   ];
+  const {auth, setAuth} = useContext(AuthContext)
 
+// logout
+const handleLogout = async() =>{
+  try{
+    const { data } = await axios.post("http://localhost:4000/api/v1/auth/logout")
+    if(data.success){
+      toast.success(data.message)
+      setAuth({
+        ...auth,
+        user:null,
+        token:""
+      })
+      localStorage.removeItem("auth")
+    }
+  
+  
+  }catch(error){
+    console.log(error);
+    toast.error(`Somthing went wrong while logging out`)
+  }
+}
   return (
     <>
       {/* Overlay */}
@@ -73,11 +97,13 @@ const Navbar = () => {
             >
               Sign Up
             </NavLink>
+            
+            <NavLink onClick={handleLogout}>Logout</NavLink>
           </div>
 
           {/* Mobile Menu Icon */}
           <div
-            className="lg:hidden cursor-pointer z-50"
+            className="text-black lg:hidden cursor-pointer z-50"
             onClick={() => setOpen(!open)}
           >
             {open ? <CloseIcon /> : <MenuIcon />}
@@ -108,7 +134,7 @@ const Navbar = () => {
 
           <hr className="border-white/20" />
 
-          <NavLink to="/login" onClick={() => setOpen(false)}>
+          <NavLink to="/login" onClick={() => setOpen(false)} className="px-5 py-2 text-center rounded-full bg-sky-500">
             Login
           </NavLink>
 

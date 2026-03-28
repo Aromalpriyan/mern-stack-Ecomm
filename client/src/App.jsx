@@ -8,6 +8,8 @@ import Products from "./pages/Products";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import PageNotFound from "./pages/PageNotFound";
+import UserDashboard from "./pages/user/UserDashboard";
+import PrivateRoute from "./components/routes/PrivateRoute";
 
 function App() {
   return (
@@ -15,6 +17,10 @@ function App() {
         <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
+        <Route path="dashboard" element={<PrivateRoute/>}>
+              <Route path="" element={<UserDashboard/>} />
+        </Route>
+        
         <Route path="about" element={<About />} />
         <Route path="collection" element={<Collection />} />
         <Route path="products" element={<Products />} />
