@@ -7,7 +7,7 @@ import slugify from "slugify"
 export const createCollection = async (req, res) => {
   try {
     // get the info from the frontend
-    const { name } = req.body;
+    const {name} = req.body;
 
     // validation
     if (!name) {
