@@ -18,5 +18,11 @@ router.get("/user-auth",isLoggedIn, (req, res) =>{
     res.status(200).send({ok:true})
 })
 
+// protected admin route
+
+router.get("/admin-auth", isLoggedIn, (req,res) => {
+    res.status(200).send({ok: true})
+})
+
 
 export default router

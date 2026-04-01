@@ -10,15 +10,19 @@ const PrivateRoute = () => {
 
         useEffect(() => {
             const authCheck = async() =>{
-                const{data} = await axios.get("/api/v1/auth/user-auth")
-                
-                if(data.ok){
-                    setOk(true)
-                }else{
+
+               try{
+                const{data} = await axios.get("http://localhost:4000/api/v1/auth/user-auth")
+
+                    setOk(data.ok)
+                }catch(error){
                     setOk(false)
                 }
-            }
+                    
+            };
+ 
             if(auth?.token) authCheck()
+                console.log("TOKEN:", auth.token);
         }, [auth?.token])
 
     return ok? <Outlet/> : <Loader/>

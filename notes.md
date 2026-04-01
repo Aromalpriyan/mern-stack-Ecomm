@@ -34,3 +34,5 @@ HTTP status code => three digits num db sends back to the in response to the  cl
 
 500=> internal server error
 502=> bad gateway
+
+

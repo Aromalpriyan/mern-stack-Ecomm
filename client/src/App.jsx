@@ -10,6 +10,8 @@ import Signup from "./pages/Signup";
 import PageNotFound from "./pages/PageNotFound";
 import UserDashboard from "./pages/user/UserDashboard";
 import PrivateRoute from "./components/routes/PrivateRoute";
+import AdminRoute from "./components/routes/AdminRoute";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 function App() {
   return (
@@ -17,16 +19,20 @@ function App() {
         <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
-        <Route path="dashboard" element={<PrivateRoute/>}>
-              <Route path="" element={<UserDashboard/>} />
+        <Route path="/dashboard" element={<PrivateRoute/>}>
+              <Route path="user" element={<UserDashboard/>} />
+        </Route>
+
+        <Route path="/dashboard" element={<AdminRoute/>}>
+              <Route path="admin" element={<AdminDashboard/>} />
         </Route>
         
-        <Route path="about" element={<About />} />
-        <Route path="collection" element={<Collection />} />
-        <Route path="products" element={<Products />} />
-        <Route path="login" element={<Login />} />
-        <Route path="signup" element={<Signup />} />
-        <Route path="*" element={<PageNotFound />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/collection" element={<Collection />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/*" element={<PageNotFound />} />
       </Route>
     </Routes>
     </div>

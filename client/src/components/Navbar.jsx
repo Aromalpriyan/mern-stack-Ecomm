@@ -8,35 +8,30 @@ import axios from "axios";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const { auth, setAuth } = useContext(AuthContext);
 
-  const links = [
-    { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
-    { name: "Collection", path: "/collection" },
-    { name: "Products", path: "/products" },
-  ];
-  const {auth, setAuth} = useContext(AuthContext)
+  // 🔹 Logout
+  const handleLogout = async () => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:4000/api/v1/auth/logout"
+      );
 
-// logout
-const handleLogout = async() =>{
-  try{
-    const { data } = await axios.post("http://localhost:4000/api/v1/auth/logout")
-    if(data.success){
-      toast.success(data.message)
-      setAuth({
-        ...auth,
-        user:null,
-        token:""
-      })
-      localStorage.removeItem("auth")
+      if (data.success) {
+        toast.success(data.message);
+        setAuth({
+          ...auth,
+          user: null,
+          token: "",
+        });
+        localStorage.removeItem("auth");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong while logging out");
     }
-  
-  
-  }catch(error){
-    console.log(error);
-    toast.error(`Somthing went wrong while logging out`)
-  }
-}
+  };
+
   return (
     <>
       {/* Overlay */}
@@ -49,11 +44,11 @@ const handleLogout = async() =>{
 
       {/* Navbar */}
       <header className="fixed top-0 left-0 w-full z-50">
-        <div className="flex justify-between items-center px-6 lg:px-20 h-20
+        <div className="flex items-center px-6 lg:px-20 h-20
           bg-white/5 backdrop-blur-xl border-b border-white/10
           shadow-[0_8px_30px_rgba(0,0,0,0.3)] text-white">
 
-          {/* Logo */}
+          {/* 🔹 Logo */}
           <NavLink
             to="/"
             className="text-2xl lg:text-3xl font-bold tracking-wide
@@ -62,89 +57,152 @@ const handleLogout = async() =>{
             MyStore
           </NavLink>
 
-          {/* Desktop Links */}
-          <nav className="font-medium hidden lg:flex items-center gap-10">
-            {links.map((link, i) => (
-              <NavLink
-                key={i}
-                to={link.path}
-                className={({ isActive }) =>
-                  `relative group transition ${
-                    isActive ? "text-sky-400" : "text-black/80"
-                  }`
-                }
-              >
-                {link.name}
+          {/* 🔹 RIGHT SIDE */}
+          <div className="hidden lg:flex items-center gap-8 font-medium ml-auto">
 
-                {/* underline animation */}
-                <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-sky-400 transition-all group-hover:w-full"></span>
-              </NavLink>
-            ))}
-          </nav>
-
-          {/* Right Side */}
-          <div className="hidden lg:flex items-center gap-6">
-            <NavLink
-              to="/login"
-              className="text-white px-5 py-2 rounded-md bg-sky-500 hover:bg-sky-600 transition shadow-lg font-semibold"
-            >
-              Login
+            {/* Home */}
+            <NavLink to="/" className={({ isActive }) =>
+              `relative group transition ${isActive ? "text-sky-400" : "text-black/80"}`
+            }>
+              Home
+              <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-sky-400 group-hover:w-full transition-all"></span>
             </NavLink>
 
-            <NavLink
-              to="/signup"
-              className="px-5 py-2 rounded-md bg-sky-500 hover:bg-sky-600 transition shadow-lg font-semibold"
-            >
-              Sign Up
-            </NavLink>
-            
-            <NavLink onClick={handleLogout}>Logout</NavLink>
+            {/* After Login Links */}
+            {auth?.user && (
+              <>
+                <NavLink to="/about" className={({ isActive }) =>
+                  `relative group transition ${isActive ? "text-sky-400" : "text-black/80"}`
+                }>
+                  About
+                  <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-sky-400 group-hover:w-full transition-all"></span>
+                </NavLink>
+
+                <NavLink to="/collection" className={({ isActive }) =>
+                  `relative group transition ${isActive ? "text-sky-400" : "text-black/80"}`
+                }>
+                  Collection
+                  <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-sky-400 group-hover:w-full transition-all"></span>
+                </NavLink>
+
+                <NavLink to="/products" className={({ isActive }) =>
+                  `relative group transition ${isActive ? "text-sky-400" : "text-black/80"}`
+                }>
+                  Products
+                  <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-sky-400 group-hover:w-full transition-all"></span>
+                </NavLink>
+
+                {/* USER DROPDOWN */}
+                <div className="relative group">
+                  <div className="flex items-center gap-2 cursor-pointer">
+                    <span className="text-sky-400 font-semibold">
+                      {auth?.user?.name}
+                    </span>
+                    <span className="text-xs">▼</span>
+                  </div>
+
+                  <div className="absolute right-0 mt-3 w-40 bg-white text-black rounded-lg shadow-lg
+                    opacity-0 invisible group-hover:opacity-100 group-hover:visible
+                    transition-all duration-300 z-50">
+
+                    <NavLink
+                      to={`/dashboard/${auth.user.role === "admin" ? "admin" : "user"}`}
+                      className="block px-4 py-2 hover:bg-gray-100 rounded-t-lg"
+                    >
+                      Dashboard
+                    </NavLink>
+
+                    <NavLink
+                      to="/profile"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      Profile
+                    </NavLink>
+
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 hover:bg-red-100 text-red-500 rounded-b-lg"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Before Login */}
+            {!auth?.user && (
+              <>
+                <NavLink
+                  to="/login"
+                  className="px-5 py-2 rounded-md bg-sky-500 hover:bg-sky-600 font-semibold"
+                >
+                  Login
+                </NavLink>
+
+                <NavLink
+                  to="/signup"
+                  className="px-5 py-2 rounded-md bg-sky-500 hover:bg-sky-600 font-semibold"
+                >
+                  Sign Up
+                </NavLink>
+              </>
+            )}
           </div>
 
-          {/* Mobile Menu Icon */}
+          {/* 🔹 Mobile Icon */}
           <div
-            className="text-black lg:hidden cursor-pointer z-50"
+            className="text-white lg:hidden ml-auto cursor-pointer z-50"
             onClick={() => setOpen(!open)}
           >
             {open ? <CloseIcon /> : <MenuIcon />}
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* 🔹 Mobile Menu */}
         <div
           className={`fixed top-0 right-0 h-screen w-72 bg-black/90 backdrop-blur-xl
           flex flex-col gap-8 p-10 text-lg font-medium
           transform transition-transform duration-500 z-50
           ${open ? "translate-x-0" : "translate-x-full"}`}
         >
-          {links.map((link, i) => (
-            <NavLink
-              key={i}
-              to={link.path}
-              onClick={() => setOpen(false)}
-              className={({ isActive }) =>
-                `transition ${
-                  isActive ? "text-sky-400" : "text-white/80"
-                }`
-              }
-            >
-              {link.name}
-            </NavLink>
-          ))}
+          <NavLink to="/" onClick={() => setOpen(false)}>Home</NavLink>
+
+          {auth?.user && (
+            <>
+              <NavLink to="/about" onClick={() => setOpen(false)}>About</NavLink>
+              <NavLink to="/collection" onClick={() => setOpen(false)}>Collection</NavLink>
+              <NavLink to="/products" onClick={() => setOpen(false)}>Products</NavLink>
+            </>
+          )}
 
           <hr className="border-white/20" />
 
-          <NavLink to="/login" onClick={() => setOpen(false)} className="px-5 py-2 text-center rounded-full bg-sky-500">
-            Login
-          </NavLink>
+          {!auth?.user ? (
+            <>
+              <NavLink to="/login" onClick={() => setOpen(false)} className="px-5 py-2 bg-sky-500 text-center rounded-full">
+                Login
+              </NavLink>
+              <NavLink to="/signup" onClick={() => setOpen(false)} className="px-5 py-2 bg-sky-500 text-center rounded-full">
+                Sign Up
+              </NavLink>
+            </>
+          ) : (
+            <>
+              <NavLink to="/dashboard" onClick={() => setOpen(false)}>Dashboard</NavLink>
+              <NavLink to="/profile" onClick={() => setOpen(false)}>Profile</NavLink>
 
-          <NavLink
-            to="/signup"
-            onClick={() => setOpen(false)}
-            className="px-5 py-2 text-center rounded-full bg-sky-500"
-          >
-            Sign Up
-          </NavLink>
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setOpen(false);
+                }}
+                className="px-5 py-2 bg-red-500 rounded-full text-white"
+              >
+                Logout
+              </button>
+            </>
+          )}
         </div>
       </header>
     </>

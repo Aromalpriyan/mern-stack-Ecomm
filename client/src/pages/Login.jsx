@@ -26,7 +26,7 @@ const Login = () => {
               token:data.token
             })
             localStorage.setItem("auth",JSON.stringify(data))
-            navigate("/")
+            navigate(location.state || "/")
           }else{
             toast.error(data.message)
           }

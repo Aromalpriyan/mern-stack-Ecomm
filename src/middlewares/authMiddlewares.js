@@ -1,13 +1,14 @@
-
-
+import { config } from "dotenv";
+import JWT from "jsonwebtoken"
 
 
 //isLoggedIn
 
-import { config } from "dotenv";
-
 export const isLoggedIn = async(req, res, next) =>{
     try{
+        //const authHeader = req.headers.authorization
+        //console.log("AUTH HEADER:", authHeader);
+
         const{token} = req.cookies;
 
         //if no token send msg
